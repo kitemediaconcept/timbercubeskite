@@ -200,6 +200,22 @@
       color: #6b7280;
       line-height: 1.5;
     }
+
+    /* MLA post photo layouts */
+    .mla-photos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 30px 0 36px; }
+    .mla-photos figure { margin: 0; }
+    .mla-photos .span-2 { grid-column: 1 / -1; }
+    .mla-photos img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+    .mla-photos .span-2 img { aspect-ratio: 16 / 9; }
+    .mla-photos figcaption, .mla-single figcaption { font-size: 0.82rem; color: #6b7280; margin-top: 8px; line-height: 1.4; }
+    .mla-single { margin: 30px auto 36px; text-align: center; }
+    .mla-single img { width: 100%; height: auto; border-radius: 14px; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+    .mla-single.narrow { max-width: 420px; }
+    .mla-single.medium { max-width: 560px; }
+    @media (max-width: 640px) {
+      .mla-photos { grid-template-columns: 1fr; gap: 12px; }
+      .mla-photos .span-2 img, .mla-photos img { aspect-ratio: 4 / 3; }
+    }
   </style>
 </head>
 
@@ -322,6 +338,21 @@
           see it come together.
         </p>
 
+        <div class="mla-photos">
+          <figure class="span-2">
+            <img src="/blog and newslatter/MLA Office Changaramkulam/office-corridor-glass-wall.jpg" alt="Corridor wall with fluted glass panels and stone-finish cladding at the MLA camp office" loading="lazy">
+            <figcaption>The entrance corridor: fluted glass panels set in a stone-finish wall, with wall-washer lights.</figcaption>
+          </figure>
+          <figure>
+            <img src="/blog and newslatter/MLA Office Changaramkulam/office-reception-2.jpg" alt="Reception area with grey and wood-finish desk, lit display shelves and visitor chairs" loading="lazy">
+            <figcaption>Reception and visitor seating, with a two-tone desk and backlit storage.</figcaption>
+          </figure>
+          <figure>
+            <img src="/blog and newslatter/MLA Office Changaramkulam/mla-cabin.jpg" alt="MLA's cabin with marble-look feature wall, lit wooden shelves and executive desk" loading="lazy">
+            <figcaption>The MLA&rsquo;s cabin: a marble-look feature wall framed by lit wooden shelves.</figcaption>
+          </figure>
+        </div>
+
         <h2>The Inauguration Day</h2>
         <p>
           The office was inaugurated on 14 November 2026. We were happy to have some well-known guests with us:
@@ -334,6 +365,21 @@
         <p>
           Having them there made the day even more memorable for us.
         </p>
+
+        <div class="mla-photos">
+          <figure class="span-2">
+            <img src="/blog and newslatter/MLA Office Changaramkulam/ribbon-cutting.jpg" alt="Ribbon cutting at the inauguration of the MLA camp office, Changaramkulam" loading="lazy">
+            <figcaption>The ribbon cutting at the camp office entrance.</figcaption>
+          </figure>
+          <figure>
+            <img src="/blog and newslatter/MLA Office Changaramkulam/inauguration-stage.jpg" alt="Guests on stage at the inauguration function" loading="lazy">
+            <figcaption>On stage at the inauguration function.</figcaption>
+          </figure>
+          <figure>
+            <img src="/blog and newslatter/MLA Office Changaramkulam/office-name-board.jpg" alt="Backlit name board reading K. P. Noushad Ali MLA, Camp Office, Changaramkulam" loading="lazy">
+            <figcaption>The backlit name board at the office.</figcaption>
+          </figure>
+        </div>
 
         <h2>A Token of Appreciation</h2>
         <p>
@@ -348,11 +394,26 @@
           I sincerely thank both of them for this kind gesture and their encouragement.
         </p>
 
+        <div class="mla-photos">
+          <figure class="span-2">
+            <img src="/blog and newslatter/MLA Office Changaramkulam/award-handover-closeup.jpg" alt="Abdul Jalal Panthenkaden receiving the Token of Appreciation on stage" loading="lazy">
+            <figcaption>Receiving the Token of Appreciation on stage.</figcaption>
+          </figure>
+        </div>
+        <figure class="mla-single narrow">
+          <img src="/blog and newslatter/MLA Office Changaramkulam/token-of-appreciation-award.jpg" alt="Token of Appreciation presented to Timbercubes by K. P. Noushad Ali MLA, Ponnani Constituency" loading="lazy">
+          <figcaption>The Token of Appreciation, presented for designing and completing the K. P. Noushad Ali MLA Camp Office, Changaramkulam.</figcaption>
+        </figure>
+
         <h2>Thank You</h2>
         <p>
           Moments like this make our journey more meaningful. We are grateful to everyone who trusted us with this
           project, and we will keep working to create good interiors for our customers.
         </p>
+
+        <figure class="mla-single medium">
+          <img src="/blog and newslatter/MLA Office Changaramkulam/thank-you-poster.jpg" alt="Thank you note from Timbercubes with the Token of Appreciation" loading="lazy">
+        </figure>
         <p style="margin-top: 32px; font-weight: 500; color: #4b5563; font-style: italic;">
           &ndash; Abdul Jalal Panthenkaden, Founder and CEO, Timbercubes
         </p>
