@@ -1,0 +1,249 @@
+// Initialize Lenis for smooth scrolling
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
+  direction: 'vertical',
+  gestureDirection: 'vertical',
+  smooth: true,
+  mouseMultiplier: 1,
+  smoothTouch: false,
+  touchMultiplier: 2,
+  infinite: false,
+})
+
+// Request animation frame loop
+function raf(time) {
+  lenis.raf(time)
+  requestAnimationFrame(raf)
+}
+
+requestAnimationFrame(raf)
+
+// Optional: Add simple sticky header class on scroll if desired
+const header = document.querySelector('.header-container');
+if (header) {
+  lenis.on('scroll', (e) => {
+    if (e.animatedScroll > 50) {
+      header.style.transform = 'scale(0.98)';
+      header.style.transition = 'transform 0.3s ease';
+    } else {
+      header.style.transform = 'scale(1)';
+    }
+  });
+}
+
+// Hero slider logic
+const slides = document.querySelectorAll('.hero-slide');
+const headings = document.querySelectorAll('.hero-heading');
+const subtexts = document.querySelectorAll('.hero-subtext');
+const heroContent = document.querySelector('.hero-inset-content');
+
+if (slides.length > 0) {
+  let currentSlide = 0;
+
+  setInterval(() => {
+    slides[currentSlide].classList.remove('active');
+    if (headings[currentSlide]) headings[currentSlide].classList.remove('active');
+    if (subtexts[currentSlide]) subtexts[currentSlide].classList.remove('active');
+    
+    currentSlide = (currentSlide + 1) % slides.length;
+    
+    slides[currentSlide].classList.add('active');
+    if (headings[currentSlide]) headings[currentSlide].classList.add('active');
+    if (subtexts[currentSlide]) subtexts[currentSlide].classList.add('active');
+  }, 5000);
+}
+
+// Services Tabs Logic
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabPanes = document.querySelectorAll('.tab-pane');
+
+tabBtns.forEach((btn, index) => {
+  btn.addEventListener('click', () => {
+    // Remove active class from all buttons and panes
+    tabBtns.forEach(b => b.classList.remove('active'));
+    tabPanes.forEach(p => p.classList.remove('active'));
+    
+    // Add active class to clicked button
+    btn.classList.add('active');
+    
+    // Show corresponding pane
+    const targetId = `tab-${btn.getAttribute('data-tab')}`;
+    const targetPane = document.getElementById(targetId);
+    if (targetPane) {
+      targetPane.classList.add('active');
+    }
+  });
+});
+
+// Mobile Menu Logic
+const mobileBtn = document.querySelector('.mobile-menu-btn');
+const mobileOverlay = document.getElementById('mobileNavOverlay');
+const mobileCloseBtn = document.getElementById('mobileNavClose');
+
+if (mobileBtn && mobileOverlay && mobileCloseBtn) {
+  mobileBtn.addEventListener('click', () => {
+    mobileOverlay.classList.add('open');
+    // Disable smooth scrolling when menu is open
+    lenis.stop();
+  });
+
+  mobileCloseBtn.addEventListener('click', () => {
+    mobileOverlay.classList.remove('open');
+    // Re-enable smooth scrolling
+    lenis.start();
+  });
+}
+
+// Mobile Services Dropdown Accordion Toggle
+const mobileServicesToggle = document.getElementById('mobileServicesToggle');
+const mobileSubServices = document.getElementById('mobileSubServices');
+
+if (mobileServicesToggle && mobileSubServices) {
+  mobileServicesToggle.addEventListener('click', () => {
+    const isExpanded = mobileServicesToggle.getAttribute('aria-expanded') === 'true';
+    mobileServicesToggle.setAttribute('aria-expanded', !isExpanded);
+    mobileSubServices.classList.toggle('collapsed', isExpanded);
+  });
+}
+
+// Gallery Lightbox Logic
+const lightbox = document.getElementById('galleryLightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxClose = document.getElementById('lightboxClose');
+const lightboxCards = document.querySelectorAll('[data-lightbox]');
+
+if (lightbox && lightboxImg && lightboxClose) {
+  lightboxCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const img = card.querySelector('.kitchen-card-img');
+      if (img) {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('active');
+        if (typeof lenis !== 'undefined') lenis.stop();
+      }
+    });
+  });
+
+  const closeLightbox = () => {
+    lightbox.classList.remove('active');
+    if (typeof lenis !== 'undefined') lenis.start();
+  };
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      closeLightbox();
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+      closeLightbox();
+    }
+  });
+}
+
+
+
+
+// Testimonial Read More Logic for Mobile
+document.querySelectorAll('.testimonial-card').forEach(card => {
+  const readMoreBtn = card.querySelector('.testimonial-read-more');
+  const quoteText = card.querySelector('.testimonial-quote-text');
+  if (readMoreBtn && quoteText) {
+    readMoreBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isExpanded = quoteText.classList.toggle('is-expanded');
+      readMoreBtn.textContent = isExpanded ? 'Read less' : 'Read more';
+    });
+  }
+});
+
+// Author Modal Global Logic
+window.openAuthorModal = function() {
+  const modal = document.getElementById('authorModal');
+  if (modal) {
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    if (typeof lenis !== 'undefined') lenis.stop();
+  }
+};
+
+window.closeAuthorModal = function() {
+  const modal = document.getElementById('authorModal');
+  if (modal) {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (typeof lenis !== 'undefined') lenis.start();
+  }
+};
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    window.closeAuthorModal();
+  }
+});
+
+document.addEventListener('click', (e) => {
+  const modal = document.getElementById('authorModal');
+  if (modal && e.target === modal) {
+    window.closeAuthorModal();
+  }
+});
+
+// Service & Location Projects Gallery Filtering Logic
+document.addEventListener('DOMContentLoaded', () => {
+  // Service-based gallery filter
+  const serviceFilterBtns = document.querySelectorAll('.service-filter-btn');
+  const serviceItems = document.querySelectorAll('.service-filter-item');
+
+  if (serviceFilterBtns.length > 0 && serviceItems.length > 0) {
+    serviceFilterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        serviceFilterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.getAttribute('data-filter');
+
+        serviceItems.forEach(item => {
+          if (filter === 'all' || item.getAttribute('data-service') === filter) {
+            item.classList.remove('is-hidden');
+          } else {
+            item.classList.add('is-hidden');
+          }
+        });
+
+        if (typeof lenis !== 'undefined') lenis.resize();
+      });
+    });
+  }
+
+  // Location filter (legacy / fallback)
+  const filterBtns = document.querySelectorAll('.loc-filter-btn');
+  const items = document.querySelectorAll('.location-filter-item');
+
+  if (filterBtns.length > 0 && items.length > 0) {
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.getAttribute('data-filter');
+
+        items.forEach(item => {
+          if (filter === 'all' || item.getAttribute('data-location') === filter) {
+            item.classList.remove('is-hidden');
+          } else {
+            item.classList.add('is-hidden');
+          }
+        });
+
+        // Trigger Lenis scroll refresh if available
+        if (typeof lenis !== 'undefined') lenis.resize();
+      });
+    });
+  }
+});
